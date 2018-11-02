@@ -7,6 +7,7 @@ const description = require(`./description`);
 const undef = require(`./undef`);
 const server = require(`./server`);
 const generate = require(`./generate`);
+const fill = require(`./fill`);
 
 module.exports = [
   version,
@@ -17,4 +18,5 @@ module.exports = [
   undef,
   server,
   generate,
+  fill,
 ];

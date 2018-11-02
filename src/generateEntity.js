@@ -30,20 +30,33 @@ const OFFER_PHOTOS = [
   `http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
 ];
 
-const LOCATION = {
-  x: genetateNumber(300, 900),
-  y: genetateNumber(150, 500)
+const getLocation = () => {
+  return {
+    x: genetateNumber(300, 900),
+    y: genetateNumber(150, 500)
+  };
 };
+
+const NAME = [
+  `Keks`,
+  `Pavel`,
+  `Nikolay`,
+  `Alex`,
+  `Ulyana`,
+  `Anastasyia`,
+  `Julia`
+];
 
 const getData = (count) => {
   return new Array(count).fill().map(() => {
     return {
       author: {
-        avatar: `https://robohash.org/${genetateNumber(1, 9)}.jpg`
+        avatar: `https://robohash.org/${genetateNumber(1, 9)}.jpg`,
+        name: getRandomValue(NAME),
       },
       offer: {
         title: getRandomValue(OFFER_TITLE),
-        address: `${LOCATION.x}, ${LOCATION.y}`,
+        address: `${getLocation().x}, ${getLocation().y}`,
         price: genetateNumber(1000, 1000000),
         type: getRandomValue(OFFER_TYPE),
         rooms: genetateNumber(1, 5),
@@ -54,7 +67,7 @@ const getData = (count) => {
         description: ``,
         photos: shuffle(OFFER_PHOTOS),
       },
-      location: LOCATION,
+      location: getLocation(),
       date: genetateNumber(new Date().valueOf() - 3600 * 24 * 7, new Date().valueOf())
     };
   });
@@ -66,6 +79,7 @@ module.exports = {
   REGISTER_TIME,
   OFFER_FEATURES,
   OFFER_PHOTOS,
-  LOCATION,
+  getLocation,
   getData,
+  NAME,
 };

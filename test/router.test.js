@@ -11,6 +11,20 @@ const offersRoute = require(`../src/router`)(offersStoreMock, imagesStoreMock);
 const app = express();
 app.use(`/api/offers`, offersRoute);
 
+const mockData = {
+  address: `1041, 488`,
+  avatar: `1.jpg`,
+  checkin: `12:00`,
+  checkout: `12:00`,
+  description: `description`,
+  features: [`dishwasher`, `parking`],
+  guests: `1`,
+  price: `5000`,
+  rooms: `1`,
+  title: `title title title title title title`,
+  type: `flat`,
+};
+
 describe(`GET /api/offers`, () => {
   it(`get all offers`, async () => {
 
@@ -88,18 +102,16 @@ describe(`GET /api/offers/:date`, () => {
 describe(`POST api/offers`, () => {
   it(`send offer as json`, async () => {
 
-    const sent = {avatar: `1.jpg`};
-
     const response = await request(app).
       post(`/api/offers`).
-      send(sent).
+      send(mockData).
       set(`Accept`, `application/json`).
       set(`Content-Type`, `application/json`).
       expect(200).
       expect(`Content-Type`, /json/);
 
     const offer = response.body;
-    assert.deepEqual(offer, sent);
+    assert.deepEqual(offer, mockData);
   });
 
   it(`send offer without avatar`, async () => {
@@ -113,41 +125,35 @@ describe(`POST api/offers`, () => {
       expect(`Content-Type`, /json/);
 
     const error = response.body;
-    assert.equal(error, `Field name "avatar" is required!`);
+    assert.deepEqual(error[0], {error: `Validation Error`, fieldName: `avatar`, errorMessage: `is required`});
   });
 
   it(`send offer as multipart/form-data`, async () => {
 
-    const authorAvatar = `1.jpg`;
-
     const response = await request(app).
       post(`/api/offers`).
-      field(`avatar`, authorAvatar).
+      field(mockData).
       set(`Accept`, `application/json`).
       set(`Content-Type`, `multipart/form-data`).
       expect(200).
       expect(`Content-Type`, /json/);
 
-
     const offer = response.body;
-    assert.deepEqual(offer, {avatar: authorAvatar});
+    assert.deepEqual(offer, mockData);
   });
   it(`send offer with avatar as multipart/form-data`, async () => {
 
-    const authorAvatar = `1.jpg`;
-
     const response = await request(app).
       post(`/api/offers`).
-      field(`avatar`, authorAvatar).
+      field(mockData).
       attach(`avatar`, `test/fixtures/1.jpg`).
       set(`Accept`, `application/json`).
       set(`Content-Type`, `multipart/form-data`).
       expect(200).
       expect(`Content-Type`, /json/);
 
-
     const offer = response.body;
-    assert.deepEqual(offer, {avatar: `${authorAvatar}`});
+    assert.deepEqual(offer, mockData);
   });
 
 });
