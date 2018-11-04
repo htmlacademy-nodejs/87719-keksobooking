@@ -1,19 +1,19 @@
 'use strict';
 
 const express = require(`express`);
-const router = new express.Router();
+const multer = require(`multer`);
+const toStream = require(`buffer-to-stream`);
+
 const IllegalArgumentError = require(`./errors/illegal-argument-error`);
 const NotFoundError = require(`./errors/not-found-error`);
-const multer = require(`multer`);
-const upload = multer({storage: multer.memoryStorage()});
-const jsonParser = express.json();
-const toStream = require(`buffer-to-stream`);
-const MongoError = require(`mongodb`).MongoError;
 const logger = require(`../logger`);
-
 const ValidationError = require(`./errors/validation-error`);
-
 const validate = require(`./validate`);
+
+const MongoError = require(`mongodb`).MongoError;
+const router = new express.Router();
+const jsonParser = express.json();
+const upload = multer({storage: multer.memoryStorage()});
 
 const PAGE_DEFAULT_LIMIT = 10;
 

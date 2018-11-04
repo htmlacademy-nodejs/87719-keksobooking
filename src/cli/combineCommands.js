@@ -1,7 +1,7 @@
 'use strict';
 const commands = require(`./`);
 
-module.exports = function (params) {
+module.exports = (params) => {
   const command = commands.find((item) => `--${item.name}` === params[0]);
 
   if (command) {
